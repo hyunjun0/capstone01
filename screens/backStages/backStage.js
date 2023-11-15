@@ -11,7 +11,7 @@ function BackStage({ route, navigation }) {
         source={require('../../images/background1.jpg')}
         style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}
       >
-        <Text style={styles.mainText}>{section} 스테이지back</Text>
+        <Text style={styles.mainText}>{section} 스테이지</Text>
         
         <View style={{ flexDirection: 'row', justifyContent: 'center', alignItems: 'center' }}>
           <View style={styles.stageContainer}>
