@@ -5,7 +5,7 @@ import { LineChart } from 'react-native-chart-kit';
 import Modal from 'react-native-modal';
 import { useNavigation, useRoute } from '@react-navigation/native';
 
-function ShoulderMission() {
+function ArmMission() {
   const navigation = useNavigation();
   const route = useRoute();
   const [missionStatus, setMissionStatus] = useState('Not Started');
@@ -236,4 +236,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default ShoulderMission;
+export default ArmMission;
