@@ -1,9 +1,11 @@
-import React, { useState } from 'react';
-import { View, Text, ImageBackground, StatusBar, StyleSheet, TouchableOpacity, ScrollView } from 'react-native';
+import React, { useState, useEffect } from 'react';
+import { StyleSheet, Text, View, TouchableOpacity, ScrollView, ImageBackground, StatusBar } from 'react-native';
+import { Accelerometer } from 'expo-sensors';
+import { LineChart } from 'react-native-chart-kit';
 import Modal from 'react-native-modal';
 import { useNavigation, useRoute } from '@react-navigation/native';
 
-function ArmMission() {
+function LowerBodyMission() {
   const navigation = useNavigation();
   const route = useRoute();
   const [missionStatus, setMissionStatus] = useState('Not Started');
@@ -46,6 +48,30 @@ function ArmMission() {
     </TouchableOpacity>
   ));
 
+  const [acceleration, setAcceleration] = useState({ x: 0, y: 0, z: 0 });
+  const [previousAcceleration, setPreviousAcceleration] = useState({ x: 0, y: 0, z: 0 });
+
+  useEffect(() => {
+    const subscription = Accelerometer.addListener(accelerometerData => {
+      setPreviousAcceleration({ ...acceleration });
+      setAcceleration(accelerometerData);
+    });
+
+    return () => {
+      subscription.remove();
+    };
+  }, [acceleration]);
+
+  const calculateAccelerationChange = (current, previous) => {
+    return {
+      x: current.x - previous.x,
+      y: current.y - previous.y,
+      z: current.z - previous.z,
+    };
+  };
+
+  const accelerationChange = calculateAccelerationChange(acceleration, previousAcceleration);
+
   return (
     <View style={{ flex: 1 }}>
       <StatusBar barStyle={'dark-content'} />
@@ -54,12 +80,14 @@ function ArmMission() {
         style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}
       >
         <ScrollView contentContainerStyle={styles.container}>
-          <Text style={styles.topicText}>선택한 운동</Text>
-          <Text style={styles.mainText}>{selectedWorkouts.join('\n')}</Text>
-          <Text style={styles.missionText}>미션 상태: {missionStatus}</Text>
-
+          <View style={styles.header}>
+            <Text style={styles.topicText}>선택한 운동</Text>
+            <Text style={styles.mainText}>{selectedWorkouts.join('\n')}</Text>
+          </View>
+          <View style={styles.missionStatusContainer}>
+            <Text style={styles.missionText}>미션 상태: {missionStatus}</Text>
+          </View>
           <View style={styles.missionButtonsContainer}>{missionButtons}</View>
-
           <TouchableOpacity style={styles.goHome} onPress={handleGoHome}>
             <Text style={styles.goHomeText}>홈으로</Text>
           </TouchableOpacity>
@@ -68,8 +96,47 @@ function ArmMission() {
 
       <Modal isVisible={isModalVisible}>
         <View style={styles.modalContent}>
-          <Text>미션 완료 확인</Text>
-          <Text>미션 {missionStatus} - {currentMission}</Text>
+          <Text>미션 완료</Text>
+          <Text>{currentMission}</Text>
+          <Text>10회</Text>
+          <Text>X: {acceleration.x.toFixed(2)}</Text>
+          <Text>Y: {acceleration.y.toFixed(2)}</Text>
+          <Text>Z: {acceleration.z.toFixed(2)}</Text>
+          <Text>X Change: {accelerationChange.x.toFixed(2)}</Text>
+          <Text>Y Change: {accelerationChange.y.toFixed(2)}</Text>
+          <Text>Z Change: {accelerationChange.z.toFixed(2)}</Text>
+          <LineChart
+        data={{
+          labels: ['X', 'Y', 'Z'],
+          datasets: [
+            {
+              data: [acceleration.x, acceleration.y, acceleration.z],
+            },
+          ],
+        }}
+        width={300}
+        height={200}
+        yAxisLabel=""
+        yAxisSuffix=""
+        yAxisInterval={1}
+        chartConfig={{
+          backgroundColor: '#fff',
+          backgroundGradientFrom: '#fff',
+          backgroundGradientTo: '#fff',
+          decimalPlaces: 2,
+          color: (opacity = 1) => `rgba(0, 0, 0, ${opacity})`,
+          style: {
+            borderRadius: 16,
+          },
+        }}
+        bezier
+        style={{
+          marginVertical: 8,
+          borderRadius: 16,
+        }}
+      />
+         
+         
           <TouchableOpacity style={styles.modalButton} onPress={handleCompleteMission}>
             <Text style={styles.modalButtonText}>완료</Text>
           </TouchableOpacity>
@@ -85,6 +152,11 @@ function ArmMission() {
 const styles = StyleSheet.create({
   container: {
     flexGrow: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+  header: {
+    flex: 1,
     justifyContent: 'center',
     alignItems: 'center',
   },
@@ -139,14 +211,14 @@ const styles = StyleSheet.create({
   },
   mainText: {
     color: 'white',
-    fontSize: 25,
+    fontSize: 20,
     fontWeight: 'bold',
     textAlign: 'center',
     lineHeight: 30,
   },
   topicText: {
     color: 'white',
-    fontSize: 35,
+    fontSize: 40,
     fontWeight: 'bold',
     textAlign: 'center',
     marginBottom: 10,
@@ -157,6 +229,11 @@ const styles = StyleSheet.create({
     fontWeight: 'bold',
     marginBottom: 20,
   },
+  missionStatusContainer: {
+    flex: 0.1,
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
 });
 
-export default ArmMission;
+export default LowerBodyMission;
