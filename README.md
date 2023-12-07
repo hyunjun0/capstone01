@@ -33,7 +33,7 @@ RN(리액트 네이티브) 및 Spring
 3. 컴퓨터에 vscode를 설치합니다.
 
 ## 설치 방법
-1. vscode 내에서 git clone https://github.com/hyunjun0/capstone01를 이용하여 다운받습니다.
+1. vscode 내에서 git clone https://github.com/hyunjun0/capstone01 를 이용하여 다운받습니다.
 2. 다운받은 폴더로 들어가서 “npm start”를 입력합니다.
 3. 터미널에 뜬 QR코드를 핸드폰 카메라로 촬영하여 해당 주소로 들어갑니다.
 4. expo 어플이 켜지면서 Healthmotive 어플이 실행됩니다.
