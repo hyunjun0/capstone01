@@ -45,7 +45,7 @@ function LowerBodyWork({navigation }) {
           <TouchableOpacity
           style={styles.nextButton} 
           onPress={() => {
-            navigation.navigate('LowerBodyMiniMission', {selectedWorkouts});
+            navigation.navigate('LowerBodyMission', {selectedWorkouts});
           }} 
         >
           <Text style={styles.nextButtonText}>다음 페이지로</Text>
