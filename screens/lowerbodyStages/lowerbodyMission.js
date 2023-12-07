@@ -37,6 +37,10 @@ function LowerBodyMission() {
     toggleModal(missionNumber);
   };
 
+  const handleCompleteClick = () => {
+    toggleModal();
+  };
+
   const handleCompleteMission = () => {
     if (currentMission) {
       const missionNumber = selectedWorkouts.indexOf(currentMission) + 1;
@@ -51,6 +55,9 @@ function LowerBodyMission() {
   const handleGoHome = () => {
     navigation.popToTop();
   };
+
+  const [score, setScore] = useState(0);
+  const VIBRATION_THRESHOLD = 10;
 
   const missionButtons = Array.from({ length: missionCount }, (_, index) => (
     <TouchableOpacity
@@ -69,6 +76,16 @@ function LowerBodyMission() {
     const subscription = Accelerometer.addListener(accelerometerData => {
       setPreviousAcceleration({ ...acceleration });
       setAcceleration(accelerometerData);
+      if (Math.abs(accelerationChange.y) >= 0.2) {
+        setScore(prevScore => prevScore + 1);
+      }
+  
+      if (score > VIBRATION_THRESHOLD) {
+        Vibration.vibrate(0.1);
+        
+      } else if(score > (1.3 * VIBRATION_THRESHOLD)){
+        Vibration.cancel()
+      }
     });
 
     return () => {
@@ -100,21 +117,18 @@ function LowerBodyMission() {
           </View>
           <View style={styles.missionStatusContainer}>
             <Text style={styles.missionText}>미션 상태: {missionStatus}</Text>
-            
-            
           </View>
           <CompletedMissionsList completedMissions={completedMissions}/>
           <View style={styles.missionButtonsContainer}>{missionButtons}</View>
           <TouchableOpacity style={styles.goHome} onPress={handleGoHome}>
             <Text style={styles.goHomeText}>홈으로</Text>
           </TouchableOpacity>
-          
         </ScrollView>
       </ImageBackground>
 
       <Modal isVisible={isModalVisible}>
         <View style={styles.modalContent}>
-          <Text>미션 내용</Text>
+          <Text>미션 완료</Text>
           <Text>{currentMission}</Text>
           <Text>10회</Text>
           <Text>X: {acceleration.x.toFixed(2)}</Text>
@@ -123,6 +137,7 @@ function LowerBodyMission() {
           <Text>X Change: {accelerationChange.x.toFixed(2)}</Text>
           <Text>Y Change: {accelerationChange.y.toFixed(2)}</Text>
           <Text>Z Change: {accelerationChange.z.toFixed(2)}</Text>
+          <Text>Score: {score}</Text>
           <LineChart
         data={{
           labels: ['X', 'Y', 'Z'],
@@ -155,7 +170,7 @@ function LowerBodyMission() {
       />
          
          
-         <TouchableOpacity style={styles.modalButton} onPress={handleCompleteMission}>
+          <TouchableOpacity style={styles.modalButton} onPress={handleCompleteMission}>
             <Text style={styles.modalButtonText}>완료</Text>
           </TouchableOpacity>
           <TouchableOpacity style={styles.modalButton} onPress={toggleModal}>
