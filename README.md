@@ -10,7 +10,7 @@ RN(리액트 네이티브) 및 Spring
 ##기술적 기능
 
 운동 트래킹을 위하여 expo에서 지원하는 accelerometer API를 이용하였습니다. 해당 API를 가공하여 핸드폰 기기를 몸에 부착한 후, 운동 움직임을 파악하고 운동 횟수를 측정하였습니다.
- ![image](https://github.com/hyunjun0/capstone01/assets/75122582/1bb6ad41-e91b-4eac-8956-49dd28009e22)
+
 
 
 ##기본세팅
@@ -26,8 +26,8 @@ RN(리액트 네이티브) 및 Spring
 
 ## 설치시 주의사항
 1. npm start를 실행했을때 에러가 뜰 경우, yarn, expo, npm 중 하나가 설치가 안되어 있을 수 있습니다. 위의 3개를 터미널을 통해서 install 하지면 문제를 해결하실 수 있습니다. 또는 해당 폴더가 프로젝트의 상위폴더에 있으면 실행이 안됩니다. 그럴경우 “cd 프로젝트폴더" 명령어를 입력하여 프로젝트 폴더로 이동하여야 합니다. 
-![image](https://github.com/hyunjun0/capstone01/assets/75122582/c11946ea-5d9a-45c3-b366-b063af7dd5d2)
 
+![image](https://github.com/hyunjun0/capstone01/assets/75122582/c11946ea-5d9a-45c3-b366-b063af7dd5d2)
 
 
 
