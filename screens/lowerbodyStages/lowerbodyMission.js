@@ -5,6 +5,17 @@ import { LineChart } from 'react-native-chart-kit';
 import Modal from 'react-native-modal';
 import { useNavigation, useRoute } from '@react-navigation/native';
 
+const CompletedMissionsList = ({ completedMissions }) => {
+  return (
+    <View>
+      <Text style={styles.missionText2}>완료된 미션 목록:</Text>
+      {completedMissions.map((mission, index) => (
+        <Text style={styles.missionText2} key={index}>{mission}</Text>
+      ))}
+    </View>
+  );
+};
+
 function LowerBodyMission() {
   const navigation = useNavigation();
   const route = useRoute();
@@ -14,6 +25,7 @@ function LowerBodyMission() {
 
   const [currentMission, setCurrentMission] = useState(null);
   const [isModalVisible, setModalVisible] = useState(false);
+  const [completedMissions, setCompletedMissions] = useState([]);
 
   const toggleModal = (missionNumber) => {
     setCurrentMission(selectedWorkouts[missionNumber - 1]);
@@ -25,13 +37,15 @@ function LowerBodyMission() {
     toggleModal(missionNumber);
   };
 
-  const handleCompleteClick = () => {
-    toggleModal();
-  };
-
   const handleCompleteMission = () => {
-    // 미션 완료 처리 로직 추가
-    toggleModal();
+    if (currentMission) {
+      const missionNumber = selectedWorkouts.indexOf(currentMission) + 1;
+      setMissionStatus(`미션 ${missionNumber} 완료`);
+
+      setCompletedMissions((prevCompletedMissions) => [...prevCompletedMissions, currentMission]);
+
+      toggleModal();
+    }
   };
 
   const handleGoHome = () => {
@@ -86,17 +100,21 @@ function LowerBodyMission() {
           </View>
           <View style={styles.missionStatusContainer}>
             <Text style={styles.missionText}>미션 상태: {missionStatus}</Text>
+            
+            
           </View>
+          <CompletedMissionsList completedMissions={completedMissions}/>
           <View style={styles.missionButtonsContainer}>{missionButtons}</View>
           <TouchableOpacity style={styles.goHome} onPress={handleGoHome}>
             <Text style={styles.goHomeText}>홈으로</Text>
           </TouchableOpacity>
+          
         </ScrollView>
       </ImageBackground>
 
       <Modal isVisible={isModalVisible}>
         <View style={styles.modalContent}>
-          <Text>미션 완료</Text>
+          <Text>미션 내용</Text>
           <Text>{currentMission}</Text>
           <Text>10회</Text>
           <Text>X: {acceleration.x.toFixed(2)}</Text>
@@ -137,7 +155,7 @@ function LowerBodyMission() {
       />
          
          
-          <TouchableOpacity style={styles.modalButton} onPress={handleCompleteMission}>
+         <TouchableOpacity style={styles.modalButton} onPress={handleCompleteMission}>
             <Text style={styles.modalButtonText}>완료</Text>
           </TouchableOpacity>
           <TouchableOpacity style={styles.modalButton} onPress={toggleModal}>
@@ -226,6 +244,12 @@ const styles = StyleSheet.create({
   missionText: {
     color: 'white',
     fontSize: 18,
+    fontWeight: 'bold',
+    marginBottom: 20,
+  },
+  missionText2: {
+    color: 'white',
+    fontSize: 14,
     fontWeight: 'bold',
     marginBottom: 20,
   },
