@@ -35,15 +35,23 @@ RN(리액트 네이티브) 및 Spring
 
 
 ## 기본세팅
+-프론트 엔드
 1. 핸드폰 기기에서 어플 “expo”를 다운받아서 회원가입을 합니다.
 2. 컴퓨터에서 터미널을 통해서 npm을 설치합니다. (터미널을 열어서 “npm install”)
 3. 컴퓨터에 vscode를 설치합니다.
 
+-백엔드
+1. spring framwork랑 maria db 설치
+
 ## 설치 방법
+-프론트 엔드
 1. vscode 내에서 git clone https://github.com/hyunjun0/capstone01 이용하여 다운받습니다.
 2. 다운받은 폴더로 들어가서 “npm start”를 입력합니다.
 3. 터미널에 뜬 QR코드를 핸드폰 카메라로 촬영하여 해당 주소로 들어갑니다.
 4. expo 어플이 켜지면서 Healthmotive 어플이 실행됩니다.
+
+-백엔드
+1. spring framwork랑 maria db 설치
 
 ## 설치시 주의사항
 1. npm start를 실행했을때 에러가 뜰 경우, yarn, expo, npm 중 하나가 설치가 안되어 있을 수 있습니다. 위의 3개를 터미널을 통해서 install 하지면 문제를 해결하실 수 있습니다. 또는 해당 폴더가 프로젝트의 상위폴더에 있으면 실행이 안됩니다. 그럴경우 “cd 프로젝트폴더" 명령어를 입력하여 프로젝트 폴더로 이동하여야 합니다. 
